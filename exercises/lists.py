@@ -1,3 +1,6 @@
+from math import inf
+
+
 class ListExercise:
     @staticmethod
     def replace(input_list: list[int]) -> list[int]:
@@ -7,7 +10,16 @@ class ListExercise:
         :param input_list: Исходный список
         :return: Список с замененными элементами
         """
-        pass
+
+        return [_ if _ <= 0 else ListExercise.list_max_enum(input_list) for _ in input_list]
+
+    @staticmethod
+    def list_max_enum(input_list: list[int]) -> float:
+        item_max = -inf
+        for item in input_list:
+            item_max = item_max if item_max > item else item
+
+        return item_max
 
     @staticmethod
     def search(input_list: list[int], query: int) -> int:
@@ -18,4 +30,23 @@ class ListExercise:
         :param query: Искомый элемент
         :return: Номер элемента
         """
-        pass
+
+        return ListExercise.binary_search(input_list, 0, len(input_list) - 1, query)
+
+    @staticmethod
+    def binary_search(recursive_list: list[int], low: int, high: int, query: int) -> int:
+
+        if high >= low:
+
+            mid_index = (low + high) // 2
+            mid_value = recursive_list[mid_index]
+
+            if query > mid_value:
+                return ListExercise.binary_search(recursive_list, mid_index + 1, high, query)
+            elif query < mid_value:
+                return ListExercise.binary_search(recursive_list, low, mid_index - 1, query)
+            else:
+                return mid_index
+
+        else:
+            return -1
