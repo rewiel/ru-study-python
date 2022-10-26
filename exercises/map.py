@@ -38,7 +38,7 @@ class MapExercise:
                 )
                 return None
 
-        list_of_rating = list(filter(lambda x: x, list(map(_filter_rating, list_of_movies))))
+        list_of_rating = list(filter(lambda x: x is not None, list(map(_filter_rating, list_of_movies))))
         return sum(list_of_rating) / len(list_of_rating)
 
     @staticmethod
