@@ -20,8 +20,11 @@ class MapExercise:
                 if (
                     movie.get("rating_kinopoisk").replace(" ", "") != ""
                     and float(movie.get("rating_kinopoisk")) != 0
-                    and len(
-                        list(filter(lambda x: x, movie.get("country").replace(" ", "").split(",")))
+                    and sum(
+                        [
+                            0 if country.isspace() else 1
+                            for country in movie.get("country").split(",")
+                        ]
                     )
                     >= 2
                 ):
