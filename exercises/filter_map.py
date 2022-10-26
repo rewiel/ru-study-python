@@ -16,16 +16,14 @@ class FilterMapExercise:
         :return: Отфильтрованный список.
         """
 
-        if len(input_array) > 0:
-            input_array = input_array
-        else:
-            raise IndexError
-
         return_array = []
 
-        for item in input_array:
-            add_to_array, func_result = func(input_array)
-            if add_to_array:
-                return_array.append(func_result)
+        if len(input_array) > 0:
+            input_array = input_array
+
+            for item in input_array:
+                add_to_array, func_result = func(item)
+                if add_to_array:
+                    return_array.append(func_result)
 
         return return_array
