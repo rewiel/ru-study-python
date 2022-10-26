@@ -11,15 +11,13 @@ class ListExercise:
         :return: Список с замененными элементами
         """
 
-        return [_ if _ <= 0 else ListExercise._list_max_enum(input_list) for _ in input_list]
+        def _list_max_enum(input_list: list[int]) -> float:
+            item_max = -inf
+            for item in input_list:
+                item_max = item_max if item_max > item else item
+            return item_max
 
-    @classmethod
-    def _list_max_enum(cls, input_list: list[int]) -> float:
-        item_max = -inf
-        for item in input_list:
-            item_max = item_max if item_max > item else item
-
-        return item_max
+        return [_ if _ <= 0 else _list_max_enum(input_list) for _ in input_list]
 
     @staticmethod
     def search(input_list: list[int], query: int) -> int:
@@ -31,22 +29,21 @@ class ListExercise:
         :return: Номер элемента
         """
 
-        return ListExercise._binary_search(input_list, 0, len(input_list) - 1, query)
+        def _binary_search(recursive_list: list[int], low: int, high: int, query: int) -> int:
 
-    @classmethod
-    def _binary_search(cls, recursive_list: list[int], low: int, high: int, query: int) -> int:
+            if high >= low:
 
-        if high >= low:
+                mid_index = (low + high) // 2
+                mid_value = recursive_list[mid_index]
 
-            mid_index = (low + high) // 2
-            mid_value = recursive_list[mid_index]
+                if query > mid_value:
+                    return _binary_search(recursive_list, mid_index + 1, high, query)
+                elif query < mid_value:
+                    return _binary_search(recursive_list, low, mid_index - 1, query)
+                else:
+                    return mid_index
 
-            if query > mid_value:
-                return ListExercise._binary_search(recursive_list, mid_index + 1, high, query)
-            elif query < mid_value:
-                return ListExercise._binary_search(recursive_list, low, mid_index - 1, query)
             else:
-                return mid_index
+                return -1
 
-        else:
-            return -1
+        return _binary_search(input_list, 0, len(input_list) - 1, query)
