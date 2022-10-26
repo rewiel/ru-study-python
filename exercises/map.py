@@ -38,7 +38,9 @@ class MapExercise:
                 )
                 return None
 
-        list_of_rating = list(filter(lambda x: x is not None, list(map(_filter_rating, list_of_movies))))
+        list_of_rating = list(
+            filter(lambda x: x is not None, list(map(_filter_rating, list_of_movies)))
+        )
         return sum(list_of_rating) / len(list_of_rating)
 
     @staticmethod
@@ -56,7 +58,7 @@ class MapExercise:
         или равным заданному значению
         """
 
-        def _filter_rating(movie: dict[str, str]) -> int:
+        def _count_symbols_movie_names(movie: dict[str, str]) -> int:
             """ """
 
             try:
@@ -74,4 +76,4 @@ class MapExercise:
                 )
                 return None
 
-        return sum(list(map(_filter_rating, list_of_movies)))
+        return sum(map(_count_symbols_movie_names, list_of_movies))
