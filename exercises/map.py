@@ -33,7 +33,7 @@ class MapExercise:
                     return None
             except ValueError as e:
                 print(
-                    f"""{e} - в строчке с назвнаием фильма {movie.get("name")},
+                    f"""{e} - в строчке с названием фильма {movie.get("name")},
                      значение в столбце rating_kinopoisk = {movie.get("rating_kinopoisk")}"""
                 )
                 return None
