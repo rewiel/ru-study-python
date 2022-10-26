@@ -17,7 +17,8 @@ class ListExercise:
                 item_max = item_max if item_max > item else item
             return item_max
 
-        return [_ if _ <= 0 else _list_max_enum(input_list) for _ in input_list]
+        max_el = _list_max_enum(input_list)
+        return [item if item <= 0 else max_el for item in input_list]
 
     @staticmethod
     def search(input_list: list[int], query: int) -> int:
