@@ -11,11 +11,13 @@ class ListExercise:
         :return: Список с замененными элементами
         """
 
-        def _list_max_enum(input_list: list[int]) -> float:
+        def _list_max_enum(input_list: list[int]) -> int:
             item_max = -inf
-            for item in input_list:
-                item_max = item_max if item_max > item else item
-            return item_max
+            if len(input_list) > 0:
+                for item in input_list:
+                    item_max = item_max if item_max > item else item
+                return int(item_max)
+            return None
 
         max_el = _list_max_enum(input_list)
         return [item if item <= 0 else max_el for item in input_list]
