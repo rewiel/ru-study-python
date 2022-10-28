@@ -20,13 +20,7 @@ class MapExercise:
                 if (
                     movie.get("rating_kinopoisk").replace(" ", "") != ""
                     and float(movie.get("rating_kinopoisk")) != 0
-                    and sum(
-                        [
-                            0 if country.isspace() else 1
-                            for country in movie.get("country").split(",")
-                        ]
-                    )
-                    >= 2
+                    and movie.get("country").count(",") >= 1
                 ):
                     return float(movie.get("rating_kinopoisk"))
                 else:
@@ -38,9 +32,9 @@ class MapExercise:
                 )
                 return None
 
-        list_of_rating = list(
-            filter(lambda x: x is not None, list(map(_filter_rating, list_of_movies)))
-        )
+        list_of_rating = [
+            rating for rating in map(_filter_rating, list_of_movies) if rating is not None
+        ]
         return sum(list_of_rating) / len(list_of_rating)
 
     @staticmethod
