@@ -55,7 +55,7 @@ class TestFlaskExercise:
         )
 
         assert response.status_code == HTTPStatus.UNPROCESSABLE_ENTITY
-        assert response == {"errors": {"name": "This field is required"}}
+        assert json.loads(response.data) == {"errors": {"name": "This field is required"}}
 
     def test_get(self) -> None:
         self.create_user({"name": "Heisenberg"})
