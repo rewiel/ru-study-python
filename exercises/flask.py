@@ -44,7 +44,7 @@ class FlaskExercise:
     @staticmethod
     def create_user() -> Response:
         content = request.get_json()
-        if name := content.get("name", None):
+        if name := content.pop("name", None):
             FlaskExercise.USERS[name] = content
             return make_response({"data": f"User {name} is created!"}, 201)
         else:
@@ -56,16 +56,14 @@ class FlaskExercise:
 
     @staticmethod
     def get_user(name: str) -> Response:
-        print("getting users")
-        print(FlaskExercise.USERS.get(name))
-        if FlaskExercise.USERS.get(name):
+        if name in FlaskExercise.USERS.keys():
             return make_response({"data": f"My name is {name}"}, 200)
         else:
             return make_response({"errors": {"name": "This field wasn't found"}}, 404)
 
     @staticmethod
     def update_user(name: str) -> Response:
-        if FlaskExercise.USERS.get(name):
+        if name in FlaskExercise.USERS.keys():
             new_name = request.get_json()["name"]
             FlaskExercise.USERS[new_name] = FlaskExercise.USERS.pop(name)
             return make_response({"data": f"My name is {new_name}"}, 200)
@@ -74,6 +72,6 @@ class FlaskExercise:
 
     @staticmethod
     def delete_user(name: str) -> Response:
-        if FlaskExercise.USERS.get(name):
+        if name in FlaskExercise.USERS.keys():
             FlaskExercise.USERS.pop(name)
         return make_response("", 204)
