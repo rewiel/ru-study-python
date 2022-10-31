@@ -59,7 +59,7 @@ class FlaskExercise:
         if name in FlaskExercise.USERS.keys():
             return make_response({"data": f"My name is {name}"}, 200)
         else:
-            return make_response({"errors": {"name": "This field wasn't found"}}, 404)
+            return make_response({"errors": {"name": f"This name {name} wasn't found"}}, 404)
 
     @staticmethod
     def update_user(name: str) -> Response:
@@ -68,10 +68,12 @@ class FlaskExercise:
             FlaskExercise.USERS[new_name] = FlaskExercise.USERS.pop(name)
             return make_response({"data": f"My name is {new_name}"}, 200)
         else:
-            return make_response({"errors": {"name": "This field wasn't found"}}, 404)
+            return make_response({"errors": {"name": f"This name {name} wasn't found"}}, 404)
 
     @staticmethod
     def delete_user(name: str) -> Response:
         if name in FlaskExercise.USERS.keys():
             FlaskExercise.USERS.pop(name)
-        return make_response("", 204)
+            return make_response("", 204)
+        else:
+            return make_response({"errors": {"name": f"This name {name} wasn't found"}}, 404)
