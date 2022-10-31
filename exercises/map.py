@@ -12,10 +12,35 @@ class MapExercise:
         Ключи словаря: name, rating_kinopoisk, rating_imdb, genres, year, access_level, country
         :return: Средний рейтинг фильмов у которых две или больше стран
         """
-        pass
+
+        def _filter_rating(movie: dict[str, str]) -> float:
+            """ """
+
+            try:
+                if (
+                    movie.get("rating_kinopoisk").replace(" ", "") != ""
+                    and float(movie.get("rating_kinopoisk")) != 0
+                    and movie.get("country").count(",") >= 1
+                ):
+                    return float(movie.get("rating_kinopoisk"))
+                else:
+                    return None
+            except ValueError as e:
+                print(
+                    f"""{e} - в строчке с названием фильма {movie.get("name")},
+                     значение в столбце rating_kinopoisk = {movie.get("rating_kinopoisk")}"""
+                )
+                return None
+
+        list_of_rating = [
+            rating for rating in map(_filter_rating, list_of_movies) if rating is not None
+        ]
+        return sum(list_of_rating) / len(list_of_rating)
 
     @staticmethod
-    def chars_count(list_of_movies: list[dict], rating: Union[float, int]) -> int:
+    def chars_count(
+        list_of_movies: list[dict], rating: Union[float, int], symbol: str = "и"
+    ) -> int:
         """
         !!Задание нужно решить используя map!!
         Посчитать количество букв 'и' в названиях всех фильмов с рейтингом (rating_kinopoisk) больше
@@ -26,4 +51,23 @@ class MapExercise:
         :return: Количество букв 'и' в названиях всех фильмов с рейтингом больше
         или равным заданному значению
         """
-        pass
+
+        def _count_symbols_movie_names(movie: dict[str, str]) -> int:
+            """ """
+
+            try:
+                if (
+                    movie.get("rating_kinopoisk").replace(" ", "") != ""
+                    and float(movie.get("rating_kinopoisk", 0)) > rating
+                ):
+                    return movie.get("name").count(symbol)
+                else:
+                    return 0
+            except ValueError as e:
+                print(
+                    f"""{e} - в строчке с названием фильма {movie.get("name")},
+                     значение в столбце rating_kinopoisk = {movie.get("rating_kinopoisk")}"""
+                )
+                return None
+
+        return sum(map(_count_symbols_movie_names, list_of_movies))
