@@ -1,4 +1,8 @@
 from flask import Flask
+from flask import request
+from flask import Response
+from flask import make_response
+import json
 
 
 class FlaskExercise:
@@ -26,6 +30,50 @@ class FlaskExercise:
     В ответ должен вернуться статус 204
     """
 
+    USERS: dict[str, dict] = {}
+
+    app = Flask(__name__)
+
     @staticmethod
     def configure_routes(app: Flask) -> None:
-        pass
+        app.post("/user")(FlaskExercise.create_user)
+        app.get("/user/<name>")(FlaskExercise.get_user)
+        app.patch("/user/<name>")(FlaskExercise.update_user)
+        app.delete("/user/<name>")(FlaskExercise.delete_user)
+
+    @staticmethod
+    def create_user() -> Response:
+        content = request.get_json()
+        if name := content.pop("name", None):
+            FlaskExercise.USERS[name] = content
+            return make_response({"data": f"User {name} is created!"}, 201)
+        else:
+            return Response(
+                response=json.dumps({"errors": {"name": "This field is required"}}),
+                status=422,
+                content_type="application/json",
+            )
+
+    @staticmethod
+    def get_user(name: str) -> Response:
+        if name in FlaskExercise.USERS.keys():
+            return make_response({"data": f"My name is {name}"}, 200)
+        else:
+            return make_response({"errors": {"name": f"This name {name} wasn't found"}}, 404)
+
+    @staticmethod
+    def update_user(name: str) -> Response:
+        if name in FlaskExercise.USERS.keys():
+            new_name = request.get_json()["name"]
+            FlaskExercise.USERS[new_name] = FlaskExercise.USERS.pop(name)
+            return make_response({"data": f"My name is {new_name}"}, 200)
+        else:
+            return make_response({"errors": {"name": f"This name {name} wasn't found"}}, 404)
+
+    @staticmethod
+    def delete_user(name: str) -> Response:
+        if name in FlaskExercise.USERS.keys():
+            FlaskExercise.USERS.pop(name)
+            return make_response("", 204)
+        else:
+            return make_response({"errors": {"name": f"This name {name} wasn't found"}}, 404)
